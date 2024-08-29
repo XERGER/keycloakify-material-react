@@ -7,11 +7,14 @@ export default defineConfig({
     plugins: [
         react(),
         keycloakify({
-            accountThemeImplementation: "none",
+            accountThemeImplementation: "Single-Page",
             keycloakVersionTargets: {
                 "21-and-below": false,
                 "22-and-above": "keycloak-theme.jar"
-            }
+            },
+            environmentVariables: [
+                { name: "CONTINUE_URL", default: "" },
+            ]
         })
     ]
 });

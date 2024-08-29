@@ -1,10 +1,11 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import type { LazyOrNot } from "keycloakify/tools/LazyOrNot";
 import { getKcClsx, type KcClsx } from "keycloakify/login/lib/kcClsx";
 import type { UserProfileFormFieldsProps } from "keycloakify/login/UserProfileFormFieldsProps";
 import type { PageProps } from "keycloakify/login/pages/PageProps";
 import type { KcContext } from "../KcContext";
 import type { I18n } from "../i18n";
+import { useTheme } from "@mui/material/styles";
 
 type RegisterProps = PageProps<Extract<KcContext, { pageId: "register.ftl" }>, I18n> & {
     UserProfileFormFields: LazyOrNot<(props: UserProfileFormFieldsProps) => JSX.Element>;
@@ -19,12 +20,27 @@ export default function Register(props: RegisterProps) {
         classes
     });
 
-    const { url, messagesPerField, recaptchaRequired, recaptchaSiteKey, termsAcceptanceRequired } = kcContext;
+    const { url, locale, messagesPerField, recaptchaRequired, recaptchaSiteKey, termsAcceptanceRequired } = kcContext;
 
-    const { msg, msgStr } = i18n;
+    const { msg, msgStr, currentLanguageTag: defaultLanguageTag } = i18n;
 
+    const langParam = new URL(window.location.href).searchParams.get("lang");
+    const isSupportedLanguage = locale?.supported.some(({ languageTag }) => languageTag === langParam);
+
+    // Set the language based on the query parameter if it's supported, otherwise use the default language
+      const currentLanguageTag: string = isSupportedLanguage ? langParam! : defaultLanguageTag;
+
+    // If the language tag changes, update the UI
+    useEffect(() => {
+        i18n.currentLanguageTag = currentLanguageTag;
+    }, [currentLanguageTag, i18n]);
+    
     const [isFormSubmittable, setIsFormSubmittable] = useState(false);
     const [areTermsAccepted, setAreTermsAccepted] = useState(false);
+    const theme = useTheme();
+
+    // Set the header color based on the theme
+    const headerColor = theme.palette.mode === "dark" ? "#ffffff" : "#000000";
 
     return (
         <Template
@@ -32,9 +48,9 @@ export default function Register(props: RegisterProps) {
             i18n={i18n}
             doUseDefaultCss={doUseDefaultCss}
             classes={classes}
-            headerNode={msg("registerTitle")}
+            headerNode={<div style={{ color: headerColor }}>{msg("registerTitle")}</div>}
             displayMessage={messagesPerField.exists("global")}
-            displayRequiredFields
+            
             
         >
             <form id="kc-register-form" className={kcClsx("kcFormClass")} action={url.registrationAction} method="post">

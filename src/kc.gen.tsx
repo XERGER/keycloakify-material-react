@@ -14,14 +14,17 @@ export type ThemeName = "keycloakify-material-react";
 
 export const themeNames: ThemeName[] = ["keycloakify-material-react"];
 
-export type KcEnvName = never;
+export type KcEnvName = "CONTINUE_URL";
 
-export const kcEnvNames: KcEnvName[] = [];
+export const kcEnvNames: KcEnvName[] = ["CONTINUE_URL"];
 
-export const kcEnvDefaults: Record<KcEnvName, string> = {};
+export const kcEnvDefaults: Record<KcEnvName, string> = {
+  "CONTINUE_URL": ""
+};
 
 export type KcContext =
     | import("./login/KcContext").KcContext
+    | import("./account/KcContext").KcContext
     ;
 
 declare global {
@@ -31,6 +34,7 @@ declare global {
 }
 
 export const KcLoginPage = lazy(() => import("./login/KcPage"));
+export const KcAccountPage = lazy(() => import("./account/KcPage"));
 
 export function KcPage(
     props: {
@@ -44,6 +48,7 @@ export function KcPage(
             {(() => {
                 switch (kcContext.themeType) {
                     case "login": return <KcLoginPage kcContext={kcContext} />;
+                    case "account": return <KcAccountPage kcContext={kcContext} />;
                 }
             })()}
         </Suspense>
