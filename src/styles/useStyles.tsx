@@ -4,12 +4,13 @@ import { tss } from "tss-react/mui";
 export const useStyles = tss.create(({ theme }) => ({
     kcHtmlClass: {
         ":root": {
-            colorScheme: "dark",
+            colorScheme: theme.palette.mode, // Dynamically use the theme's mode (dark or light)
         },
     },
     
     kcBodyClass: {
         backgroundColor: theme.palette.background.default,
+        color: theme.palette.text.primary,
     },
 
     kcFormCardClass: {
@@ -18,9 +19,10 @@ export const useStyles = tss.create(({ theme }) => ({
         padding: "0 20px",
         maxWidth: "500px",
         margin: "0 auto",
-        background: "#303030",
+        background: theme.palette.background.default, // Use paper background from theme
         borderRadius: "8px",
         paddingBottom: "20px",
+        transition: "background-color 0.3s ease",
     },
 
     kcLocaleListItemClass: {
@@ -28,9 +30,9 @@ export const useStyles = tss.create(({ theme }) => ({
         "&.active": {
             backgroundColor: theme.palette.action.selected,
         },
-        background: "#303030",
+        background: theme.palette.background.default,
         "&:hover": {
-            background: "#303030",
+            background: theme.palette.background.default,
         },
     },
     
@@ -40,36 +42,35 @@ export const useStyles = tss.create(({ theme }) => ({
     },
     
     kcButtonClass: {
-        width: "100%", // Full width button
-        backgroundColor: theme.palette.secondary.main, // Primary theme color
-        color: theme.palette.primary.contrastText, // Contrast text color
-        padding: theme.spacing(1.5), // Vertical padding for larger button size
-        fontSize: "16px", // Larger font size for emphasis
-        borderRadius: "4px", // Rounded corners
-        border: "none", // Remove default border
+        width: "100%", 
+        backgroundColor: theme.palette.secondary.main, 
+        color: theme.palette.primary.contrastText,
+        padding: theme.spacing(1.5),
+        fontSize: "16px", 
+        borderRadius: "4px",
+        border: "none",
         cursor: "pointer",
-        transition: "background-color 0.3s ease, box-shadow 0.3s ease", // Smooth transition
+        transition: "background-color 0.3s ease, box-shadow 0.3s ease",
         "&:hover": {
-            backgroundColor: theme.palette.secondary.dark, // Darker shade on hover
-            boxShadow: `0 0 1px ${theme.palette.secondary.light}`, // Add glowing effect
-            animation: `shimmer 1.5s infinite`, // Apply shimmer animation
+            backgroundColor: theme.palette.secondary.dark,
+            boxShadow: `0 0 1px ${theme.palette.secondary.light}`,
         },
     },
 
     kcInfoAreaWrapperClass: {
         boxShadow: theme.shadows[5],
-        padding: "0 20px",
+
         maxWidth: "500px",
         margin: "0 auto",
+        backgroundColor: `${theme.palette.background.default} !important`, // Make backgroundColor important
 
-        backgroundColor: "#303030!important",
         borderRadius: "8px",
+        transition: "background-color 0.3s ease",
     },
  
     kcLabelClass: {
-        color: "#ccc",
+        color: theme.palette.text.primary,
         fontSize: "0.9em",
         fontWeight: "bold",
     },
-
 }) satisfies { [key in ClassKey]?: unknown; });

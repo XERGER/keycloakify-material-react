@@ -13,18 +13,18 @@ export type ThemeName = "keycloakify-material-react";
 
 export const themeNames: ThemeName[] = ["keycloakify-material-react"];
 
-export type KcEnvName = never;
+export type KcEnvName = "CONTINUE_URL";
 
-export const kcEnvNames: KcEnvName[] = [];
+export const kcEnvNames: KcEnvName[] = ["CONTINUE_URL"];
 
-export const kcEnvDefaults: Record<KcEnvName, string> = {};
+export const kcEnvDefaults: Record<KcEnvName, string> = {
+  "CONTINUE_URL": ""
+};
 
-/**
- * NOTE: Do not import this type except maybe in your entrypoint.
- * If you need to import the KcContext import it either from src/login/KcContext.ts or src/account/KcContext.ts.
- * Depending on the theme type you are working on.
- */
-export type KcContext = import("./login/KcContext").KcContext;
+export type KcContext =
+    | import("./login/KcContext").KcContext
+    | import("./account/KcContext").KcContext
+    ;
 
 declare global {
     interface Window {
@@ -33,6 +33,7 @@ declare global {
 }
 
 export const KcLoginPage = lazy(() => import("./login/KcPage"));
+export const KcAccountPage = lazy(() => import("./account/KcPage"));
 
 export function KcPage(props: { kcContext: KcContext; fallback?: ReactNode }) {
     const { kcContext, fallback } = props;
@@ -40,8 +41,8 @@ export function KcPage(props: { kcContext: KcContext; fallback?: ReactNode }) {
         <Suspense fallback={fallback}>
             {(() => {
                 switch (kcContext.themeType) {
-                    case "login":
-                        return <KcLoginPage kcContext={kcContext} />;
+                    case "login": return <KcLoginPage kcContext={kcContext} />;
+                    case "account": return <KcAccountPage kcContext={kcContext} />;
                 }
             })()}
         </Suspense>

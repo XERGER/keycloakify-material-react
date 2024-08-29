@@ -28,9 +28,17 @@ export default function Template(props: TemplateProps<KcContext, I18n>) {
 
     const { kcClsx } = getKcClsx({ doUseDefaultCss, classes });
 
-    const { msg, msgStr, getChangeLocaleUrl, labelBySupportedLanguageTag, currentLanguageTag } = i18n;
+    const { msg, msgStr, getChangeLocaleUrl, labelBySupportedLanguageTag, currentLanguageTag: defaultLanguageTag } = i18n;
 
     const { realm, locale, auth, url, message, isAppInitiatedAction, authenticationSession, scripts } = kcContext;
+    
+    const langParam = new URL(window.location.href).searchParams.get("lang");
+    const isSupportedLanguage = locale?.supported.some(({ languageTag }) => languageTag === langParam);
+
+    // Set the language based on the query parameter if it's supported, otherwise use the default language
+    const currentLanguageTag = isSupportedLanguage ? langParam : defaultLanguageTag;
+    const currentLanguageLabel = currentLanguageTag ? labelBySupportedLanguageTag[currentLanguageTag] : labelBySupportedLanguageTag[defaultLanguageTag];
+
 
     useEffect(() => {
         document.title = documentTitle ?? msgStr("loginTitle", kcContext.realm.displayName);
@@ -136,7 +144,7 @@ export default function Template(props: TemplateProps<KcContext, I18n>) {
                                         aria-expanded="false"
                                         aria-controls="language-switch1"
                                     >
-                                        {labelBySupportedLanguageTag[currentLanguageTag]}
+                                        {currentLanguageLabel}
                                     </button>
                                     <ul
                                         role="menu"
