@@ -6,6 +6,7 @@ import { getKcClsx, type KcClsx } from "keycloakify/login/lib/kcClsx";
 import type { KcContext } from "../KcContext";
 import type { I18n } from "../i18n";
 import { Button, useTheme } from "@mui/material";
+//import CustomCookieConsent from "./CookieConsent";
 
 export default function Login(props: PageProps<Extract<KcContext, { pageId: "login.ftl" }>, I18n>) {
     const { kcContext, i18n, doUseDefaultCss, Template, classes } = props;
@@ -22,6 +23,9 @@ export default function Login(props: PageProps<Extract<KcContext, { pageId: "log
     const langParam = new URL(window.location.href).searchParams.get("lang");
     const isSupportedLanguage = locale?.supported.some(({ languageTag }) => languageTag === langParam);
 
+    //<CustomCookieConsent></CustomCookieConsent> for websites that need cookie consent
+
+
     // Set the language based on the query parameter if it's supported, otherwise use the default language
       const currentLanguageTag: string = isSupportedLanguage ? langParam! : defaultLanguageTag;
 
@@ -37,6 +41,8 @@ export default function Login(props: PageProps<Extract<KcContext, { pageId: "log
     const headerColor = theme.palette.mode === "dark" ? "#ffffff" : "#000000";
 
     return (
+
+
         <Template
             kcContext={kcContext}
             i18n={i18n}
@@ -89,6 +95,7 @@ export default function Login(props: PageProps<Extract<KcContext, { pageId: "log
                 </>
             }
         >
+
             <div id="kc-form">
                 <div id="kc-form-wrapper">
                     {realm.password && (
