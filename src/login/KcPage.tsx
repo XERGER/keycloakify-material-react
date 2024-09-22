@@ -20,7 +20,6 @@ const doMakeUserConfirmPassword = true;
 
 export default function KcPage(props: { kcContext: KcContext }) {
 
-
     const lightTheme = createTheme({
         palette: {
             mode: "light",
@@ -46,21 +45,26 @@ export default function KcPage(props: { kcContext: KcContext }) {
     useEffect(() => {
         const urlParams = new URLSearchParams(window.location.search);
         const themeParam = urlParams.get("theme");
-
-        if (themeParam === "dark") {
+    
+        // Check if there's a theme saved in localStorage
+        const savedTheme = localStorage.getItem("theme");
+    
+        if (themeParam) {
+            // Query parameter takes precedence
+            localStorage.setItem("theme", themeParam); // Save to localStorage for future reloads
+            if (themeParam === "dark") {
+                setSelectedTheme(darkTheme);
+            } else {
+                setSelectedTheme(lightTheme);
+            }
+        } else if (savedTheme === "dark") {
+            // Use localStorage if no query param
             setSelectedTheme(darkTheme);
         } else {
             setSelectedTheme(lightTheme);
         }
     }, []);
-
-    // Confirming that the theme is set correctly
-    useEffect(() => {
-        console.log("Current theme:", selectedTheme.palette.mode);
-    }, [selectedTheme]);
-
-
-
+    
     return (
         <ThemeProvider theme={selectedTheme}>
            <KcPageContextualized {...props}></KcPageContextualized>
@@ -75,7 +79,7 @@ export default function KcPage(props: { kcContext: KcContext }) {
 
     const { i18n } = useI18n({ kcContext });
  
-    const {classes} =useStyles();
+    const {classes} = useStyles();
 
     return (
         <Suspense>
