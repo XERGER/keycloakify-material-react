@@ -3,11 +3,11 @@ import { assert } from "keycloakify/tools/assert";
 import { clsx } from "keycloakify/tools/clsx";
 import type { TemplateProps } from "keycloakify/login/TemplateProps";
 import { getKcClsx } from "keycloakify/login/lib/kcClsx";
-import { useInsertScriptTags } from "keycloakify/tools/useInsertScriptTags";
-import { useInsertLinkTags } from "keycloakify/tools/useInsertLinkTags";
 import { useSetClassName } from "keycloakify/tools/useSetClassName";
 import type { I18n } from "./i18n";
 import type { KcContext } from "./KcContext";
+import { kcSanitize } from "keycloakify/lib/kcSanitize";
+import { useInitialize } from "keycloakify/login/Template.useInitialize";
 
 export default function Template(props: TemplateProps<KcContext, I18n>) {
     const {
@@ -28,17 +28,35 @@ export default function Template(props: TemplateProps<KcContext, I18n>) {
 
     const { kcClsx } = getKcClsx({ doUseDefaultCss, classes });
 
-    const { msg, msgStr, getChangeLocaleUrl, labelBySupportedLanguageTag, currentLanguageTag: defaultLanguageTag } = i18n;
 
-    const { realm, locale, auth, url, message, isAppInitiatedAction, authenticationSession, scripts } = kcContext;
-    
+
+    // Destructure necessary properties
+    const { msg, msgStr, currentLanguage, enabledLanguages } = i18n;
+    const { realm, locale, auth, url, message, isAppInitiatedAction } = kcContext;
+
+    // Retrieve the 'lang' parameter from the URL
     const langParam = new URL(window.location.href).searchParams.get("lang");
-    const isSupportedLanguage = locale?.supported.some(({ languageTag }) => languageTag === langParam);
 
-    // Set the language based on the query parameter if it's supported, otherwise use the default language
+    // Check if the langParam is among the supported languages
+    const isSupportedLanguage = locale?.supported.some(
+    ({ languageTag }) => languageTag === langParam
+    );
+
+    // Define defaultLanguageTag, fallback to currentLanguage if not defined
+    const defaultLanguageTag = currentLanguage?.languageTag || 'en'; // Replace 'en' with your actual default
+
+    // Determine the currentLanguageTag
     const currentLanguageTag = isSupportedLanguage ? langParam : defaultLanguageTag;
-    const currentLanguageLabel = currentLanguageTag ? labelBySupportedLanguageTag[currentLanguageTag] : labelBySupportedLanguageTag[defaultLanguageTag];
 
+    // Find the language object from enabledLanguages
+    const currentLanguageObj = enabledLanguages.find(
+    (lang) => lang.languageTag === currentLanguageTag
+    );
+
+    // Set the currentLanguageLabel
+    const currentLanguageLabel = currentLanguageObj
+    ? currentLanguageObj.label
+    : currentLanguage.label; // Fallback to currentLanguage.label if not found
 
     useEffect(() => {
         document.title = documentTitle ?? msgStr("loginTitle", kcContext.realm.displayName);
@@ -66,59 +84,9 @@ export default function Template(props: TemplateProps<KcContext, I18n>) {
         html.lang = currentLanguageTag;
     }, []);
 
-    const { areAllStyleSheetsLoaded } = useInsertLinkTags({
-        componentOrHookName: "Template",
-        hrefs: !doUseDefaultCss
-            ? []
-            : [
-                  `${url.resourcesCommonPath}/node_modules/@patternfly/patternfly/patternfly.min.css`,
-                  `${url.resourcesCommonPath}/node_modules/patternfly/dist/css/patternfly.min.css`,
-                  `${url.resourcesCommonPath}/node_modules/patternfly/dist/css/patternfly-additions.min.css`,
-                  `${url.resourcesCommonPath}/lib/pficon/pficon.css`,
-                  `${url.resourcesPath}/css/login.css`
-              ]
-    });
+    const { isReadyToRender } = useInitialize({ kcContext, doUseDefaultCss });
 
-    const { insertScriptTags } = useInsertScriptTags({
-        componentOrHookName: "Template",
-        scriptTags: [
-            {
-                type: "module",
-                src: `${url.resourcesPath}/js/menu-button-links.js`
-            },
-            ...(authenticationSession === undefined
-                ? []
-                : [
-                      {
-                          type: "module",
-                          textContent: [
-                              `import { checkCookiesAndSetTimer } from "${url.resourcesPath}/js/authChecker.js";`,
-                              ``,
-                              `checkCookiesAndSetTimer(`,
-                              `  "${authenticationSession.authSessionId}",`,
-                              `  "${authenticationSession.tabId}",`,
-                              `  "${url.ssoLoginInOtherTabsUrl}"`,
-                              `);`
-                          ].join("\n")
-                      } as const
-                  ]),
-            ...scripts.map(
-                script =>
-                    ({
-                        type: "text/javascript",
-                        src: script
-                    }) as const
-            )
-        ]
-    });
-
-    useEffect(() => {
-        if (areAllStyleSheetsLoaded) {
-            insertScriptTags();
-        }
-    }, [areAllStyleSheetsLoaded]);
-
-    if (!areAllStyleSheetsLoaded) {
+    if (!isReadyToRender) {
         return null;
     }
 
@@ -129,10 +97,9 @@ export default function Template(props: TemplateProps<KcContext, I18n>) {
                     {msg("loginTitleHtml", realm.displayNameHtml)}
                 </div>
             </div>
-
             <div className={kcClsx("kcFormCardClass")}>
                 <header className={kcClsx("kcFormHeaderClass")}>
-                    {realm.internationalizationEnabled && (assert(locale !== undefined), locale.supported.length > 1) && (
+                    {enabledLanguages.length > 1 && (
                         <div className={kcClsx("kcLocaleMainClass")} id="kc-locale">
                             <div id="kc-locale-wrapper" className={kcClsx("kcLocaleWrapperClass")}>
                                 <div id="kc-locale-dropdown" className={clsx("menu-button-links", kcClsx("kcLocaleDropDownClass"))}>
@@ -154,15 +121,10 @@ export default function Template(props: TemplateProps<KcContext, I18n>) {
                                         id="language-switch1"
                                         className={kcClsx("kcLocaleListClass")}
                                     >
-                                        {locale.supported.map(({ languageTag }, i) => (
+                                        {enabledLanguages.map(({ languageTag, label, href }: any, i: number) => (
                                             <li key={languageTag} className={kcClsx("kcLocaleListItemClass")} role="none">
-                                                <a
-                                                    role="menuitem"
-                                                    id={`language-${i + 1}`}
-                                                    className={kcClsx("kcLocaleItemClass")}
-                                                    href={getChangeLocaleUrl(languageTag)}
-                                                >
-                                                    {labelBySupportedLanguageTag[languageTag]}
+                                                <a role="menuitem" id={`language-${i + 1}`} className={kcClsx("kcLocaleItemClass")} href={href}>
+                                                    {label}
                                                 </a>
                                             </li>
                                         ))}
@@ -223,7 +185,7 @@ export default function Template(props: TemplateProps<KcContext, I18n>) {
                                 <span
                                     className={kcClsx("kcAlertTitleClass")}
                                     dangerouslySetInnerHTML={{
-                                        __html: message.summary
+                                        __html: kcSanitize(message.summary)
                                     }}
                                 />
                             </div>
@@ -249,9 +211,7 @@ export default function Template(props: TemplateProps<KcContext, I18n>) {
                         {socialProvidersNode}
                         {displayInfo && (
                             <div id="kc-info" className={kcClsx("kcSignUpClass")}>
-                                <div id="kc-info-wrapper"
-                            
-                                className={kcClsx("kcInfoAreaWrapperClass")}>
+                                <div id="kc-info-wrapper" className={kcClsx("kcInfoAreaWrapperClass")}>
                                     {infoNode}
                                 </div>
                             </div>

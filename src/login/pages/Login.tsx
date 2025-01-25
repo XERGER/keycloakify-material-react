@@ -18,27 +18,54 @@ export default function Login(props: PageProps<Extract<KcContext, { pageId: "log
 
     const { social, realm, locale, url, usernameHidden, login, auth, registrationDisabled, messagesPerField } = kcContext;
 
-    const { msg, msgStr, currentLanguageTag: defaultLanguageTag } = i18n;
+    const { msg, msgStr, currentLanguage, enabledLanguages } = i18n;
 
-    const langParam = new URL(window.location.href).searchParams.get("lang");
-    const isSupportedLanguage = locale?.supported.some(({ languageTag }) => languageTag === langParam);
+    const langParam = new URL(window.location.href).searchParams.get("lang")?.toLowerCase();
 
-    //<CustomCookieConsent></CustomCookieConsent> for websites that need cookie consent
+    // Check if the langParam is among the supported languages
+    const isSupportedLanguage = locale?.supported.some(
+        ({ languageTag }) => languageTag.toLowerCase() === langParam
+    );
 
+    // Define defaultLanguageTag, fallback to currentLanguage if not defined
+    const defaultLanguageTag = currentLanguage?.languageTag || 'en'; // Replace 'en' with your actual default
 
-    // Set the language based on the query parameter if it's supported, otherwise use the default language
-      const currentLanguageTag: string = isSupportedLanguage ? langParam! : defaultLanguageTag;
+    // Determine the currentLanguageTag
+    const currentLanguageTag = isSupportedLanguage ? langParam! : defaultLanguageTag;
 
-    // If the language tag changes, update the UI
+    // Find the language object from enabledLanguages
+    const currentLanguageObj = enabledLanguages.find(
+        (lang) => lang.languageTag.toLowerCase() === currentLanguageTag.toLowerCase()
+    );
+
+    // Update the i18n.currentLanguage based on the currentLanguageTag
     useEffect(() => {
-        i18n.currentLanguageTag = currentLanguageTag;
-    }, [currentLanguageTag, i18n]);
+        if (currentLanguageObj) {
+            // Assuming you have a method to set the language, or directly mutate the i18n object
+            i18n.currentLanguage = {
+                languageTag: currentLanguageObj.languageTag,
+                label: currentLanguageObj.label
+            };
+            // Optionally, update the URL to reflect the current language without reloading
+            updateLanguageInURL(currentLanguageObj.languageTag);
+        } else {
+            console.warn(`Language tag '${currentLanguageTag}' is not enabled. Falling back to default.`);
+        }
+    }, [currentLanguageTag, currentLanguageObj, i18n]);
+
     
     const [isLoginButtonDisabled, setIsLoginButtonDisabled] = useState(false);
     const continueUrl = kcContext.properties.CONTINUE_URL;
     const theme = useTheme();
 
     const headerColor = theme.palette.mode === "dark" ? "#ffffff" : "#000000";
+
+
+    const updateLanguageInURL = (languageTag: string) => {
+        const url = new URL(window.location.href);
+        url.searchParams.set('lang', languageTag);
+        window.history.replaceState({}, '', url);
+    };
 
     return (
 
@@ -65,7 +92,7 @@ export default function Login(props: PageProps<Extract<KcContext, { pageId: "log
             }
             socialProvidersNode={
                 <>
-                    {realm.password && social.providers?.length && (
+                    {social && realm.password && social.providers?.length && (
                         <div id="kc-social-providers" className={kcClsx("kcFormSocialAccountSectionClass")}>
                             <hr />
                             <h2>{msg("identity-provider-login-label")}</h2>

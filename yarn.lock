@@ -1443,21 +1443,21 @@
     "@jridgewell/resolve-uri" "^3.1.0"
     "@jridgewell/sourcemap-codec" "^1.4.14"
 
-"@keycloak/keycloak-admin-client@25.0.2":
-  version "25.0.2"
-  resolved "https://registry.yarnpkg.com/@keycloak/keycloak-admin-client/-/keycloak-admin-client-25.0.2.tgz#4cd0447a4a190ed123a2efecd4078ec0f96add39"
-  integrity sha512-rHlJ1bQYQKLA3fnIktYZqofQP9imSPTia0yX7329fTpJ49A2MoPduAEFNsTa9QJIPHcuz2TBgZ6eI5NnfaP6/w==
+"@keycloak/keycloak-admin-client@25.0.4":
+  version "25.0.4"
+  resolved "https://registry.yarnpkg.com/@keycloak/keycloak-admin-client/-/keycloak-admin-client-25.0.4.tgz#2ec46bab133cc807df78ffd7ca7bba47ec8ed000"
+  integrity sha512-mZVFwly7cHZq1XpvJrrOutU0qrUbGo8NUdpb7PS4309x8yG2a4/WyZfh2lgiopBRQ6R/b24RsuHa4GetQPqT+g==
   dependencies:
     camelize-ts "^3.0.0"
     url-join "^5.0.0"
     url-template "^3.1.1"
 
-"@keycloakify/keycloak-account-ui@v25.0.2-rc.1":
-  version "25.0.2-rc.1"
-  resolved "https://registry.yarnpkg.com/@keycloakify/keycloak-account-ui/-/keycloak-account-ui-25.0.2-rc.1.tgz#8bf497b79cc0e88ebe07c9af09736fdaa921c6ec"
-  integrity sha512-w+SMQ3d45Dw+3dVsJNoBFOktwCH1CLWYYy9CIeIadOcjXeCjf+Sjg82JgpNkTY791I5aGo2O+T9Jdw5JDnirRg==
+"@keycloakify/keycloak-account-ui@^25.0.4-rc.5":
+  version "25.0.4-rc.10"
+  resolved "https://registry.yarnpkg.com/@keycloakify/keycloak-account-ui/-/keycloak-account-ui-25.0.4-rc.10.tgz#bf39dd7945ab50ea425940705df1d1e94298c4c6"
+  integrity sha512-KhA0dyGy6RhSLKVW3L/D4eGr0P+u8UMjDielsITm28Y2Erp16VeiFNgbZwSTcgYe5HE0dxRebHyLTi+76E+VHg==
   dependencies:
-    tsafe "^1.7.2"
+    tsafe "^1.8.5"
 
 "@mui/core-downloads-tracker@^5.16.7":
   version "5.16.7"
@@ -3125,7 +3125,6 @@ core-util-is@~1.0.0:
   resolved "https://registry.yarnpkg.com/core-util-is/-/core-util-is-1.0.3.tgz#a6042d3634c2b27e9328f837b965fac83808db85"
   integrity sha512-ZQBvi1DcpJ4GDqanjucZ2Hj3wEO5pZDS89BWbkcrvdxksJorwUDDZamX9ldFkp9aw2lmBDLgkObEA4DWNJ9FYQ==
 
-cross-spawn@^7.0.0, cross-spawn@^7.0.3:
 cosmiconfig@^7.0.0:
   version "7.1.0"
   resolved "https://registry.yarnpkg.com/cosmiconfig/-/cosmiconfig-7.1.0.tgz#1443b9afa596b670082ea46cbd8f6a62b84635f6"
@@ -3144,7 +3143,7 @@ cross-fetch@4.0.0:
   dependencies:
     node-fetch "^2.6.12"
 
-cross-spawn@^7.0.0, cross-spawn@^7.0.2, cross-spawn@^7.0.3:
+cross-spawn@^7.0.0, cross-spawn@^7.0.3:
   version "7.0.3"
   resolved "https://registry.yarnpkg.com/cross-spawn/-/cross-spawn-7.0.3.tgz#f73a85b9d5d41d045551c177e2882d4ac85728a6"
   integrity sha512-iRDPJKUPVEND7dHPO8rkbOnPpyDygcDFtWjpeWNCgy8WP2rXcxXL8TskReQl6OrB2G7+UJrags1q15Fudc7G6w==
@@ -4794,40 +4793,33 @@ jsonfile@^6.0.1:
   optionalDependencies:
     graceful-fs "^4.1.6"
 
-<<<<<<< HEAD
 "jsx-ast-utils@^2.4.1 || ^3.0.0":
   version "3.3.5"
   resolved "https://registry.yarnpkg.com/jsx-ast-utils/-/jsx-ast-utils-3.3.5.tgz#4766bd05a8e2a11af222becd19e15575e52a853a"
   integrity sha512-ZZow9HBI5O6EPgSJLUb8n2NKgmVWTwCvHGwFuJlMjvLFqlGG6pjirPhtdsseaLZjSibD8eegzmYpUZwoIlj2cQ==
-=======
-jwt-decode@^4.0.0:
-  version "4.0.0"
-  resolved "https://registry.yarnpkg.com/jwt-decode/-/jwt-decode-4.0.0.tgz#2270352425fd413785b2faf11f6e755c5151bd4b"
-  integrity sha512-+KJGIyHgkGuIq3IEBNftfhW/LfWhXUIY6OmyVWjliu5KH1y0fw7VQ8YndE2O4qZdMSd9SqbnC8GOcZEy0Om7sA==
-
-keycloak-js@25.0.2:
-  version "25.0.2"
-  resolved "https://registry.yarnpkg.com/keycloak-js/-/keycloak-js-25.0.2.tgz#10de8352ae7bb0d46396e4f083b40b959285791b"
-  integrity sha512-ACLf5O5PqzfDJwGqvLpqM0kflYWmyl3+T7M2C23gztJYccDxdfNP54+B9OkXz2GnDpLUId0ceoA+lbHw9t4Wng==
-  dependencies:
-    js-sha256 "^0.11.0"
-    jwt-decode "^4.0.0"
-
-keycloakify@10.0.0-rc.149:
-  version "10.0.0-rc.149"
-  resolved "https://registry.yarnpkg.com/keycloakify/-/keycloakify-10.0.0-rc.149.tgz#dab1304cf7c2e9f757f13937c8d46a3ee03ade11"
-  integrity sha512-Meo7B7YyspoPVVM8+qcXOoYHdsU49OWDzHoY1tk+lbi0amBSmdJUcybaVJ/N2zmbFjXENikZwuzkuyEMcoN6ww==
->>>>>>> 24984e1 (Add dark mode & lang change via query parameter and continue without account button)
   dependencies:
     array-includes "^3.1.6"
     array.prototype.flat "^1.3.1"
     object.assign "^4.1.4"
     object.values "^1.1.6"
 
-keycloakify@^11.8.8:
-  version "11.8.8"
-  resolved "https://registry.yarnpkg.com/keycloakify/-/keycloakify-11.8.8.tgz#0ca4ce910c681ee4f80308e82dc95fc2556ffb19"
-  integrity sha512-ya/Vz2a3qgQtIBDs4LvaJNBxH7YjaSaxBQ42NeEe7BzQlfcmKcMXpo14B9ThSx6G+zdqqdMcrPX06mphk5cSDA==
+jwt-decode@^4.0.0:
+  version "4.0.0"
+  resolved "https://registry.yarnpkg.com/jwt-decode/-/jwt-decode-4.0.0.tgz#2270352425fd413785b2faf11f6e755c5151bd4b"
+  integrity sha512-+KJGIyHgkGuIq3IEBNftfhW/LfWhXUIY6OmyVWjliu5KH1y0fw7VQ8YndE2O4qZdMSd9SqbnC8GOcZEy0Om7sA==
+
+keycloak-js@25.0.4:
+  version "25.0.4"
+  resolved "https://registry.yarnpkg.com/keycloak-js/-/keycloak-js-25.0.4.tgz#9f3bf8c68fc2535a7dc1d04c1c9f427ae8f4cfc4"
+  integrity sha512-LW7dVgqcBxMnnJTdmh7Zgd0NpStJnX2sCMrJGqcGtm4zmk4Rwlqk2o2uOvY7PaRHHYePXfbIwrqVhlN3GAnRCg==
+  dependencies:
+    js-sha256 "^0.11.0"
+    jwt-decode "^4.0.0"
+
+keycloakify@^11.8.11:
+  version "11.8.11"
+  resolved "https://registry.yarnpkg.com/keycloakify/-/keycloakify-11.8.11.tgz#430c2c98763c9cbc1ae3b5199c21cdaeca5ad5ac"
+  integrity sha512-uuLfeTCAhh5Lliu8zvDOjQZWG4tFEUUm7K3R9p4Dv5TZ9cE4Ztkh0EdfQTOIkljCdzEY9wPNwOBup7+TQH4uKQ==
   dependencies:
     tsafe "^1.8.5"
 
@@ -4912,11 +4904,7 @@ lodash.merge@^4.6.2:
   resolved "https://registry.yarnpkg.com/lodash.merge/-/lodash.merge-4.6.2.tgz#558aa53b43b661e1925a0afdfa36a9a1085fe57a"
   integrity sha512-0KpjqXRVvrYyCsX1swR/XTK0va6VQkQM6MNo7PqW77ByjAhoARA8EfrP1N4+KlKj8YS0ZUCtRT/YUuhyYDujIQ==
 
-<<<<<<< HEAD
-lodash@^4.17.21:
-=======
-lodash@^4.17.15, lodash@^4.17.19, lodash@^4.17.21:
->>>>>>> 24984e1 (Add dark mode & lang change via query parameter and continue without account button)
+lodash@^4.17.19, lodash@^4.17.21:
   version "4.17.21"
   resolved "https://registry.yarnpkg.com/lodash/-/lodash-4.17.21.tgz#679591c564c3bffaae8454cf0b3df370c3d6911c"
   integrity sha512-v2kDEe57lecTulaDIuNTPy3Ry4gLGJ6Z1O3vE1krgXZNrsQ+LFTGHVxVjcXPs17LhbZVGedAJv8XZ1tvj5FvSg==
@@ -5464,6 +5452,11 @@ path-to-regexp@0.1.7:
   resolved "https://registry.yarnpkg.com/path-to-regexp/-/path-to-regexp-0.1.7.tgz#df604178005f522f15eb4490e7247a1bfaa67f8c"
   integrity sha512-5DFkuoqlv1uYQKxy8omFBeJPQcdoE07Kv2sferDCrAq1ohOU+MSDswDIbnx3YAM60qIOnYa53wBhXW0EbMonrQ==
 
+path-type@^4.0.0:
+  version "4.0.0"
+  resolved "https://registry.yarnpkg.com/path-type/-/path-type-4.0.0.tgz#84ed01c0a7ba380afe09d90a8c180dcd9d03043b"
+  integrity sha512-gDKb8aZMDeD/tZWs9P6+q0J9Mwkdl6xMV8TjnGP3qJVJ06bdMgkbBlLU8IdfOsIsFz2BW1rNVT3XuNEl8zPAvw==
+
 path-type@^5.0.0:
   version "5.0.0"
   resolved "https://registry.yarnpkg.com/path-type/-/path-type-5.0.0.tgz#14b01ed7aea7ddf9c7c3f46181d4d04f9c785bb8"
@@ -5576,7 +5569,7 @@ prompts@^2.4.0:
     kleur "^3.0.3"
     sisteransi "^1.0.5"
 
-prop-types@^15.7.2, prop-types@^15.8.1:
+prop-types@^15.6.2, prop-types@^15.7.2, prop-types@^15.8.1:
   version "15.8.1"
   resolved "https://registry.yarnpkg.com/prop-types/-/prop-types-15.8.1.tgz#67d87bf1a694f48435cf332c24af10214a3140b5"
   integrity sha512-oj87CgZICdulUohogVAR7AjlC0327U4el4L6eAvOqCeudMDVU0NThNaV+b9Df4dXgSP1gXMTnPdhfe/2qDH5cg==
@@ -6495,17 +6488,10 @@ ts-dedent@^2.0.0, ts-dedent@^2.2.0:
   resolved "https://registry.yarnpkg.com/ts-dedent/-/ts-dedent-2.2.0.tgz#39e4bd297cd036292ae2394eb3412be63f563bb5"
   integrity sha512-q5W7tVM71e2xjHZTlgfTDoPF/SmqKG5hddq9SzR49CH2hayqRKJtQ4mtRlSxKaJlR/+9rEM+mnBHf7I2/BQcpQ==
 
-<<<<<<< HEAD
 tsafe@^1.8.5:
   version "1.8.5"
   resolved "https://registry.yarnpkg.com/tsafe/-/tsafe-1.8.5.tgz#cdf9fa3111974ac480d7ee519f8241815e5d22ea"
   integrity sha512-LFWTWQrW6rwSY+IBNFl2ridGfUzVsPwrZ26T4KUJww/py8rzaQ/SY+MIz6YROozpUCaRcuISqagmlwub9YT9kw==
-=======
-tsafe@^1.6.6, tsafe@^1.7.2:
-  version "1.7.2"
-  resolved "https://registry.yarnpkg.com/tsafe/-/tsafe-1.7.2.tgz#0f63d414876287ad01b135f832722f93e22da374"
-  integrity sha512-dAPfQLhCfCRre5qs+Z5Q2a7s2CV7RxffZUmvj7puGaePYjECzWREJFd3w4XSFe/T5tbxgowfItA/JSSZ6Ma3dA==
->>>>>>> 24984e1 (Add dark mode & lang change via query parameter and continue without account button)
 
 tsconfig-paths@^4.2.0:
   version "4.2.0"
@@ -6539,13 +6525,6 @@ tss-react@^4.9.12:
     "@emotion/cache" "*"
     "@emotion/serialize" "*"
     "@emotion/utils" "*"
-
-tsutils@^3.21.0:
-  version "3.21.0"
-  resolved "https://registry.yarnpkg.com/tsutils/-/tsutils-3.21.0.tgz#b48717d394cea6c1e096983eed58e9d61715b623"
-  integrity sha512-mHKK3iUXL+3UF6xL5k0PEhKRUBKPBCv/+RkEOpjRWxxx27KKRBmmA60A9pgOUvMi8GKhRMPEmjBRPzs2W7O1OA==
-  dependencies:
-    tslib "^1.8.1"
 
 type-check@^0.4.0, type-check@~0.4.0:
   version "0.4.0"

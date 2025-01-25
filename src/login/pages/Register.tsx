@@ -22,18 +22,49 @@ export default function Register(props: RegisterProps) {
 
     const { url, locale, messagesPerField, recaptchaRequired, recaptchaSiteKey, termsAcceptanceRequired } = kcContext;
 
-    const { msg, msgStr, currentLanguageTag: defaultLanguageTag } = i18n;
+    const { msg, msgStr, enabledLanguages, currentLanguage } = i18n;
 
+    // Retrieve the 'lang' parameter from the URL
     const langParam = new URL(window.location.href).searchParams.get("lang");
-    const isSupportedLanguage = locale?.supported.some(({ languageTag }) => languageTag === langParam);
 
-    // Set the language based on the query parameter if it's supported, otherwise use the default language
-      const currentLanguageTag: string = isSupportedLanguage ? langParam! : defaultLanguageTag;
 
-    // If the language tag changes, update the UI
+    // Check if the langParam is among the supported languages
+    const isSupportedLanguage = locale?.supported.some(
+        ({ languageTag }) => languageTag.toLowerCase() === langParam
+    );
+
+    // Define defaultLanguageTag, fallback to currentLanguage if not defined
+    const defaultLanguageTag = currentLanguage?.languageTag || 'en'; // Replace 'en' with your actual default
+
+    // Determine the currentLanguageTag
+    const currentLanguageTag = isSupportedLanguage ? langParam! : defaultLanguageTag;
+
+    // Find the language object from enabledLanguages
+    const currentLanguageObj = enabledLanguages.find(
+        (lang) => lang.languageTag.toLowerCase() === currentLanguageTag.toLowerCase()
+    );
+
+    // Update the i18n.currentLanguage based on the currentLanguageTag
     useEffect(() => {
-        i18n.currentLanguageTag = currentLanguageTag;
-    }, [currentLanguageTag, i18n]);
+        if (currentLanguageObj) {
+            // Assuming you have a method to set the language, or directly mutate the i18n object
+            i18n.currentLanguage = {
+                languageTag: currentLanguageObj.languageTag,
+                label: currentLanguageObj.label
+            };
+            // Optionally, update the URL to reflect the current language without reloading
+            updateLanguageInURL(currentLanguageObj.languageTag);
+        } else {
+            console.warn(`Language tag '${currentLanguageTag}' is not enabled. Falling back to default.`);
+        }
+    }, [currentLanguageTag, currentLanguageObj, i18n]);
+
+        // Function to update the URL without reloading the page
+        const updateLanguageInURL = (languageTag: string) => {
+            const url = new URL(window.location.href);
+            url.searchParams.set('lang', languageTag);
+            window.history.replaceState({}, '', url);
+        };
     
     const [isFormSubmittable, setIsFormSubmittable] = useState(false);
     const [areTermsAccepted, setAreTermsAccepted] = useState(false);
