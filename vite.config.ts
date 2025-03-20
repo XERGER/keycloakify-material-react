@@ -9,8 +9,8 @@ export default defineConfig({
         keycloakify({
             accountThemeImplementation: "Single-Page",
             keycloakVersionTargets: {
-                "21-and-below": false,
-                "22-and-above": "keycloak-theme.jar"
+                "22-to-25": "keycloak-theme.jar",
+                "all-other-versions": false,
             },
             environmentVariables: [
                 { name: "CONTINUE_URL", default: "" },
