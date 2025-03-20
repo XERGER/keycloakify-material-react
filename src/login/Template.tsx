@@ -32,7 +32,7 @@ export default function Template(props: TemplateProps<KcContext, I18n>) {
 
     // Destructure necessary properties
     const { msg, msgStr, currentLanguage, enabledLanguages } = i18n;
-    const { realm, locale, auth, url, message, isAppInitiatedAction } = kcContext;
+    const { locale, auth, url, message, isAppInitiatedAction } = kcContext;
 
     // Retrieve the 'lang' parameter from the URL
     const langParam = new URL(window.location.href).searchParams.get("lang");
@@ -94,7 +94,7 @@ export default function Template(props: TemplateProps<KcContext, I18n>) {
         <div className={kcClsx("kcLoginClass")}>
             <div id="kc-header" className={kcClsx("kcHeaderClass")}>
                 <div id="kc-header-wrapper" className={kcClsx("kcHeaderWrapperClass")}>
-                    {msg("loginTitleHtml", realm.displayNameHtml)}
+              
                 </div>
             </div>
             <div className={kcClsx("kcFormCardClass")}>

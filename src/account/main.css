@@ -1,0 +1,18 @@
+
+.pf-v5-c-page__header {
+    display: none!important;
+  }
+  
+
+
+/* main.css */
+@font-face {
+  font-family: "Quicksand";
+  src: url("./Quicksand/quicksand-v31-latin-regular.woff2") format("woff2");
+  font-weight: 400;
+  font-style: normal;
+}
+
+body {
+  font-family: "Quicksand", sans-serif;
+}

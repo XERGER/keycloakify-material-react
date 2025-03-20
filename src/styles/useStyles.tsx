@@ -73,4 +73,6 @@ export const useStyles = tss.create(({ theme }) => ({
         fontSize: "0.9em",
         fontWeight: "bold",
     },
+
+    
 }) satisfies { [key in ClassKey]?: unknown; });
