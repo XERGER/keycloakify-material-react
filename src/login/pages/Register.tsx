@@ -23,7 +23,22 @@ export default function Register(props: RegisterProps) {
     const { url, locale, messagesPerField, recaptchaRequired, recaptchaSiteKey, termsAcceptanceRequired } = kcContext;
 
     const { msg, msgStr, enabledLanguages, currentLanguage } = i18n;
-
+    useEffect(() => {
+        const urlParams = new URLSearchParams(window.location.search);
+        const paramLang = urlParams.get("lang");
+        const savedLang = localStorage.getItem("lang");
+    
+        // 1. Use URL param if it exists => store to localStorage
+        // 2. Else use any saved localStorage value => put it in the URL
+        // 3. Else fall back to default
+        if (paramLang) {
+          localStorage.setItem("lang", paramLang);
+        } else if (savedLang) {
+          const newUrl = new URL(window.location.href);
+          newUrl.searchParams.set("lang", savedLang);
+          window.history.replaceState({}, "", newUrl.toString());
+        }
+      }, []);
     // Retrieve the 'lang' parameter from the URL
     const langParam = new URL(window.location.href).searchParams.get("lang");
 

@@ -14,7 +14,7 @@ export const clientUiPrimary = {
     900: '#66137b',
     A100: '#ff80ab',
     A200: '#ff4081',
-    A400: '#f50057',
+    A400: '#c327ea',
     A700: '#c51162',
   } as const;
   
@@ -31,7 +31,7 @@ export const clientUiPrimary = {
     900: '#001f75',
     A100: '#82b1ff',
     A200: '#448aff',
-    A400: '#2979ff',
+    A400: '#014cff',
     A700: '#2962ff',
   } as const;
   

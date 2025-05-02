@@ -1,13 +1,15 @@
-import { useEffect } from "react";
-import { assert } from "keycloakify/tools/assert";
+import { useEffect, useState } from "react";
 import { clsx } from "keycloakify/tools/clsx";
+import { kcSanitize } from "keycloakify/lib/kcSanitize";
 import type { TemplateProps } from "keycloakify/login/TemplateProps";
 import { getKcClsx } from "keycloakify/login/lib/kcClsx";
 import { useSetClassName } from "keycloakify/tools/useSetClassName";
+import { useInitialize } from "keycloakify/login/Template.useInitialize";
 import type { I18n } from "./i18n";
 import type { KcContext } from "./KcContext";
-import { kcSanitize } from "keycloakify/lib/kcSanitize";
-import { useInitialize } from "keycloakify/login/Template.useInitialize";
+import { useTheme } from "@mui/material/styles";
+import logoDarkPngUrl from "./img/logo_black.svg";
+import logoWhitePngUrl from "./img/logo_white.svg";
 
 export default function Template(props: TemplateProps<KcContext, I18n>) {
     const {
@@ -28,12 +30,27 @@ export default function Template(props: TemplateProps<KcContext, I18n>) {
 
     const { kcClsx } = getKcClsx({ doUseDefaultCss, classes });
 
-
-
     // Destructure necessary properties
     const { msg, msgStr, currentLanguage, enabledLanguages } = i18n;
     const { locale, auth, url, message, isAppInitiatedAction } = kcContext;
 
+    useEffect(() => {
+        const urlParams = new URLSearchParams(window.location.search);
+        const paramLang = urlParams.get("lang");
+        const savedLang = localStorage.getItem("lang");
+    
+        // 1. Use URL param if it exists => store to localStorage
+        // 2. Else use any saved localStorage value => put it in the URL
+        // 3. Else fall back to default
+        if (paramLang) {
+          localStorage.setItem("lang", paramLang);
+        } else if (savedLang) {
+          const newUrl = new URL(window.location.href);
+          newUrl.searchParams.set("lang", savedLang);
+          window.history.replaceState({}, "", newUrl.toString());
+        }
+      }, []);
+    
     // Retrieve the 'lang' parameter from the URL
     const langParam = new URL(window.location.href).searchParams.get("lang");
 
@@ -57,6 +74,22 @@ export default function Template(props: TemplateProps<KcContext, I18n>) {
     const currentLanguageLabel = currentLanguageObj
     ? currentLanguageObj.label
     : currentLanguage.label; // Fallback to currentLanguage.label if not found
+    
+    const [isGlobalInput, setIsGlobalInput] = useState(false);
+
+    useEffect(() => {
+      try {
+        setIsGlobalInput(localStorage.getItem("isGlobalInput") === "true");
+      } catch (e) {
+        console.error("Error accessing localStorage for isGlobalInput:", e);
+      }
+    }, []);
+    
+    useEffect(() => {
+        if (isGlobalInput) {
+            document.body.style.setProperty("background-color", "transparent", "important");
+        } 
+      }, [isGlobalInput]);
 
     useEffect(() => {
         document.title = documentTitle ?? msgStr("loginTitle", kcContext.realm.displayName);
@@ -72,29 +105,22 @@ export default function Template(props: TemplateProps<KcContext, I18n>) {
         className: bodyClassName ?? kcClsx("kcBodyClass")
     });
 
-    useEffect(() => {
-        const { currentLanguageTag } = locale ?? {};
-
-        if (currentLanguageTag === undefined) {
-            return;
-        }
-
-        const html = document.querySelector("html");
-        assert(html !== null);
-        html.lang = currentLanguageTag;
-    }, []);
-
     const { isReadyToRender } = useInitialize({ kcContext, doUseDefaultCss });
 
     if (!isReadyToRender) {
         return null;
     }
+    const theme = useTheme();
+    const logoSrc =
+    theme.palette.mode === "dark"
+      ? logoDarkPngUrl
+      : logoWhitePngUrl;
 
     return (
         <div className={kcClsx("kcLoginClass")}>
             <div id="kc-header" className={kcClsx("kcHeaderClass")}>
                 <div id="kc-header-wrapper" className={kcClsx("kcHeaderWrapperClass")}>
-              
+                <img src={logoSrc} width={260} alt="Logo" />
                 </div>
             </div>
             <div className={kcClsx("kcFormCardClass")}>
@@ -121,7 +147,7 @@ export default function Template(props: TemplateProps<KcContext, I18n>) {
                                         id="language-switch1"
                                         className={kcClsx("kcLocaleListClass")}
                                     >
-                                        {enabledLanguages.map(({ languageTag, label, href }: any, i: number) => (
+                                        {enabledLanguages.map(({ languageTag, label, href }, i) => (
                                             <li key={languageTag} className={kcClsx("kcLocaleListItemClass")} role="none">
                                                 <a role="menuitem" id={`language-${i + 1}`} className={kcClsx("kcLocaleItemClass")} href={href}>
                                                     {label}

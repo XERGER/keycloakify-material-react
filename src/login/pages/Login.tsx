@@ -19,7 +19,23 @@ export default function Login(props: PageProps<Extract<KcContext, { pageId: "log
     const { social, realm, locale, url, usernameHidden, login, auth, registrationDisabled, messagesPerField } = kcContext;
 
     const { msg, msgStr, currentLanguage, enabledLanguages } = i18n;
-
+    useEffect(() => {
+        const urlParams = new URLSearchParams(window.location.search);
+        const paramLang = urlParams.get("lang");
+        const savedLang = localStorage.getItem("lang");
+    
+        // 1. Use URL param if it exists => store to localStorage
+        // 2. Else use any saved localStorage value => put it in the URL
+        // 3. Else fall back to default
+        if (paramLang) {
+          localStorage.setItem("lang", paramLang);
+        } else if (savedLang) {
+          const newUrl = new URL(window.location.href);
+          newUrl.searchParams.set("lang", savedLang);
+          window.history.replaceState({}, "", newUrl.toString());
+        }
+      }, []);
+      
     const langParam = new URL(window.location.href).searchParams.get("lang")?.toLowerCase();
 
     // Check if the langParam is among the supported languages

@@ -53,6 +53,7 @@ export const useStylesRegister = tss.create(({ theme }) => ({
             boxShadow: `0 0 1px ${theme.palette.secondary.light}`, // Add glowing effect
             animation: `shimmer 1.5s infinite`, // Apply shimmer animation
         },
+        marginTop: "10px", // Space above the button
     },
 
     kcInfoAreaWrapperClass: {
@@ -64,7 +65,6 @@ export const useStylesRegister = tss.create(({ theme }) => ({
         backgroundColor: "#303030!important",
         borderRadius: "8px",
     },
- 
     kcLabelClass: {
         color: "#ccc",
         fontSize: "0.9em",

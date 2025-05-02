@@ -40,11 +40,10 @@ export const useStyles = tss.create(({ theme }) => ({
         color: theme.palette.text.primary,
         paddingTop: "10px",
     },
-    
     kcButtonClass: {
         width: "100%", 
         backgroundColor: theme.palette.secondary.main, 
-        color: theme.palette.primary.contrastText,
+        color: theme.palette.text.primary,
         padding: theme.spacing(1.5),
         fontSize: "16px", 
         borderRadius: "4px",
@@ -55,8 +54,8 @@ export const useStyles = tss.create(({ theme }) => ({
             backgroundColor: theme.palette.secondary.dark,
             boxShadow: `0 0 1px ${theme.palette.secondary.light}`,
         },
+        marginTop: "10px", // Space above the button
     },
-
     kcInfoAreaWrapperClass: {
         boxShadow: theme.shadows[5],
 
